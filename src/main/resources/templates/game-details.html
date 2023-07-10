@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}"></title>
+</head>
+<body>
+    
+    <div th:object="${game}">
+        <img th:src="${game.thumbnail}" th:alt="|image of ${title}|">
+        <h2 th:text="${title}"></h2>
+        <p th:text="|Year of release: ${year}|"></p>
+        <p th:text="|Rank: ${game.rank}|"></p>
+        <p th:text="|Users rated: ${game.usersRated}|"></p>
+        <a th:href="@{${game.url}}"></a>
+
+        <h2>Leave a review</h2>
+
+        <form th:action="@{/review}" method="post" th:object="${comment}">
+            <input type="hidden" data-th-field="*{comment.gameId}" data-th-value="${game.id}">
+            <label for="username">Name:</label>
+            <input type="text" name="username" th:field="*{comment.userName}">
+            <label for="rating">Rating: </label>
+            <select name="rating" th:field="*{comment.rating}">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <label for="comments">Comments: </label>
+            <textarea name="comments" id="" cols="30" rows="10" th:field="*{comment.comment}"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="commentsSection">
+        <h2>Comments</h2>
+        <div class="comment" data-th-each="comment: ${comments}">
+            <p data-th-text="${comment.userName}" style="font-weight: bold;"></p>
+            <p data-th-text="|Rating: ${comment.rating}|"></p>
+            <p data-th-text="|Comment: ${comment.comment}|"></p>
+        </div>
+    </div>
+</body>
+</html>
